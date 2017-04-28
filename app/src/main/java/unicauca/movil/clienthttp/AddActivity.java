@@ -6,15 +6,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import unicauca.movil.clienthttp.models.Pelicula;
+import unicauca.movil.clienthttp.models.Response;
+import unicauca.movil.clienthttp.net.PeliculaService;
+import unicauca.movil.clienthttp.util.Data;
 
-public class AddActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddActivity extends AppCompatActivity implements View.OnClickListener, Callback<Response> {
 
     EditText nombre, calificacion, sinopsis, duracion;
     Spinner genero;
 
     String[] generos;
+    PeliculaService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         Button add = (Button) findViewById(R.id.btnAdd);
         add.setOnClickListener(this);
+
+        service = Data.retrofit.create(PeliculaService.class);
 
     }
 
@@ -50,5 +59,22 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         pelicula.setSinopsis(sin);
         pelicula.setGenero(gen);
 
+        service.insert(pelicula).enqueue(this);
+    }
+
+    @Override
+    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+        Response res = response.body();
+        if(res.isSuccess()){
+            Toast.makeText(this, "Operación exitosa", Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFailure(Call<Response> call, Throwable t) {
+        Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
     }
 }
