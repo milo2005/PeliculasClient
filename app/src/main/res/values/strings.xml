@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ClientHttp</string>
+    <string name="agregar">Agregar</string>
+    <string name="nombre">Nombre</string>
+    <string name="calificacion">Calificacion</string>
+    <string name="sinopsis">Sinopsis</string>
+    <string name="duracion">duracion</string>
+    <string-array name="genero">
+        <item>Accion</item>
+        <item>Comedia</item>
+        <item>Terror</item>
+        <item>Drama</item>
+        <item>Fantasia</item>
+    </string-array>
+</resources>
